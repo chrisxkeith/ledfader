@@ -76,13 +76,19 @@ class LEDFader {
         }
 };
 
-LEDFader*       ledFader = NULL;
 unsigned int    DURATION_IN_SECONDS = 10;
+unsigned int    maxIntensity = 255;
 unsigned int    startIntensity = 0;
 unsigned int    endIntensity = 255;
 time_t          started = 0;
+LEDFader*       ledFader = NULL;
 
 void setup() {
+    maxIntensity = ((int)pow(2, analogWriteResolution(D0))) - 1;
+    oledWrapper.printTitle(String(maxIntensity), 3);
+    delay(5000);
+
+    endIntensity = maxIntensity;
     started = Time.now();
     ledFader = new LEDFader(D0, started, DURATION_IN_SECONDS, startIntensity, endIntensity);
 }
