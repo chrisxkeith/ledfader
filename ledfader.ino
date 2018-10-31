@@ -44,14 +44,21 @@ class LEDFader {
                 unsigned int    startIntensity,
                 unsigned int    endIntensity) {
             this->pin = pin;
+            pinMode(pin, OUTPUT);
+            resetFader(startTime, fadeTimeInSeconds, startIntensity, endIntensity);
+        }
+
+        void resetFader(time_t       startTime,
+                unsigned int    fadeTimeInSeconds,
+                unsigned int    startIntensity,
+                unsigned int    endIntensity) {
             this->startTime = startTime;
             this->fadeTimeInSeconds = fadeTimeInSeconds;
             this->startIntensity = startIntensity;
             this->endIntensity = endIntensity;
             this->currentIntensity = startIntensity;
-            pinMode(pin, OUTPUT);
         }
-        
+
         void doFade() {
             time_t  now = Time.now();
             currentIntensity = endIntensity;
@@ -90,6 +97,6 @@ void loop() {
         endIntensity = startIntensity;
         startIntensity = tmp;
         started = Time.now();
-        ledFader = new LEDFader(D0, started, DURATION_IN_SECONDS, startIntensity, endIntensity);
+        ledFader->resetFader(started, DURATION_IN_SECONDS, startIntensity, endIntensity);
     }
 }
